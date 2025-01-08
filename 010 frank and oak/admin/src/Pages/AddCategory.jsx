@@ -1,17 +1,47 @@
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AddCategory = () => {
+  const nav = useNavigate();
 
   const handleAddCategory = (e) => {
     e.preventDefault();
     axios.post(`http://localhost:4800/api/admin-panel/parent-category/insert-category`, e.target)
       .then((response) => {
         console.log(response.data);
+        let timerInterval;
+        Swal.fire({
+          title: "Category added!",
+          html: "You will be redirected to view category in <b></b> milliseconds.",
+          timer: 800,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+              timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            nav('/dashboard/category/view-category')
+          }
+        });
       })
       .catch((error) => {
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          footer: '<a href="#">Why do I have this issue?</a>'
+        });
       });
   }
 

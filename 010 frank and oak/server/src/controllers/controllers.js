@@ -1,9 +1,15 @@
 /* Admin Panel Controllers */
 // Parent Category
 const {
-    createCategory
+    createCategory,
+    readParentCategories,
+    updateParentCategoryStatus,
+    deleteParentCategory
 } = require("./admin-panel/parentCategory");
 
 module.exports = {
-    createCategory
+    createCategory,
+    readParentCategories,
+    updateParentCategoryStatus,
+    deleteParentCategory
 }
