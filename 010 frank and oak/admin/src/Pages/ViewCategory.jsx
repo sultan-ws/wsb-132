@@ -11,6 +11,7 @@ const ViewCategory = () => {
   let [show1, setShow1] = useState(false);
 
   const [categories, setCategories] = useState([]);
+  const [checkedCategories, setCheckedCategories] = useState([]);
 
   const fetchCategories = () => {
     axios.get(`http://localhost:4800/api/admin-panel/parent-category/read-categories`)
@@ -79,6 +80,20 @@ const ViewCategory = () => {
     });
   }
 
+  const handleCheckCategory = (e) =>{
+    const {checked, value} = e.target;
+
+    if(checked){
+      setCheckedCategories([...checkedCategories, value])
+    } else {
+      setCheckedCategories(checkedCategories.filter((id)=> id !== value));
+    }
+  }
+
+  const handleDeleteCategories = ()=>{
+    console.log(checkedCategories);
+  }
+
   return (
     <div className="w-[90%] mx-auto my-[150px] bg-white rounded-[10px] border">
       <span className="block h-[40px] bg-[#f8f8f9] text-[20px] text-[#303640] p-[8px_16px] border-b rounded-[10px_10px_0_0]">
@@ -91,7 +106,7 @@ const ViewCategory = () => {
               <th>
                 <button
                   className="bg-red-400 rounded-sm px-2 py-1"
-
+onClick={handleDeleteCategories}
                 >Delete</button>
                 <input
                   type="checkbox"
@@ -118,8 +133,9 @@ const ViewCategory = () => {
                       type="checkbox"
                       name="delete"
                       id="delete1"
-
+                      onClick={handleCheckCategory}
                       className="accent-[#5351c9] cursor-pointer"
+                      value={category._id}
 
                     />
                   </td>
